@@ -1,8 +1,8 @@
 {
-  "name": "js-debug",
-  "displayName": "JavaScript Debugger",
+  "name": "js-debug-for-react",
+  "displayName": "JavaScript Debugger For React",
   "version": "1.93.0",
-  "publisher": "ms-vscode",
+  "publisher": "luohe",
   "author": {
     "name": "Microsoft Corporation"
   },

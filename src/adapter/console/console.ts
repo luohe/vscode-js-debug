@@ -22,6 +22,7 @@ import {
   WarningMessage,
 } from './textualMessage';
 
+const DEBUG_LOG_MARK = 'DEBUG_LOG';
 const duplicateNodeJsLogFunctions = new Set(['group', 'assert', 'count']);
 
 @injectable()
@@ -92,6 +93,22 @@ export class Console implements IConsole {
     this.queue.enqueue(message.toDap(thread));
   }
 
+  public isDebugLog(event: Cdp.Runtime.ConsoleAPICalledEvent) {
+    const args = event.args[0];
+    if (args && args.type === 'string' && args.value?.indexOf(DEBUG_LOG_MARK) !== -1) {
+      return true;
+    }
+    return false;
+  }
+
+  public debugLogResetStackTrace(event: Cdp.Runtime.ConsoleAPICalledEvent) {
+    try {
+      if (event.stackTrace?.callFrames?.length) {
+        event.stackTrace.callFrames = event.stackTrace?.callFrames.slice(2)
+      }
+    } catch (error) {}
+  }
+
   /**
    * @inheritdoc
    */
@@ -107,6 +124,10 @@ export class Console implements IConsole {
       ) {
         return;
       }
+    }
+
+    if (this.isDebugLog(event)) {
+      this.debugLogResetStackTrace(event)
     }
 
     switch (event.type) {

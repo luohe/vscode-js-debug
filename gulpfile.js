@@ -42,7 +42,7 @@ const isNightly = process.argv.includes('--nightly') || isWatch;
 /**
  * Extension ID to build. Appended with '-nightly' as necessary.
  */
-const extensionName = isNightly ? 'js-debug-nightly' : 'js-debug';
+const extensionName = isNightly ? 'js-debug-nightly' : 'js-debug-for-react';
 
 async function runBuildScript(name) {
   return new Promise((resolve, reject) =>
